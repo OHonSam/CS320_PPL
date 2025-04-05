@@ -8,17 +8,39 @@
     <link rel="stylesheet" href="css/transactions.css">
     <link rel="stylesheet" href="css/chart.css">
     <link rel="stylesheet" href="css/balanceCard.css">
+    <link rel="stylesheet" href="css/pieChart.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="center-text" id="greeting">Loading...</div>
     
     <div class="transaction-container">
-        <!-- Balance Card Component -->
-        <div id="balance-card" class="balance-card">
-            <h3 class="balance-title">Total Balance</h3>
-            <p class="balance-amount">$0.00</p>
-            <span class="balance-change positive-change">+0.00%</span>
+        <!-- Balance Card and Pie Chart Container -->
+        <div class="summary-container">
+            <!-- Balance Card Component -->
+            <div id="balance-card" class="balance-card">
+                <h3 class="balance-title">Total Balance</h3>
+                <p class="balance-amount">$0.00</p>
+                <span class="balance-change positive-change">+0.00%</span>
+            </div>
+            
+            <!-- Pie Chart Component -->
+            <div id="pie-card" class="pie-card">
+                <h3 class="pie-title">Income vs Expenses</h3>
+                <div class="pie-container">
+                    <canvas id="incomeExpensePie"></canvas>
+                </div>
+                <div class="pie-legend">
+                    <div class="legend-item">
+                        <span class="legend-color income-color"></span>
+                        <span class="legend-label">Incomes</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color expense-color"></span>
+                        <span class="legend-label">Expenses</span>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <h2 class="transaction-header">Balance Over Time</h2>
@@ -47,5 +69,6 @@
     <script src="js/utils/transactions.js"></script>
     <script src="js/components/balanceChart.js"></script>
     <script src="js/components/balanceCard.js"></script>
+    <script src="js/components/pieChart.js"></script>
 </body>
 </html>
