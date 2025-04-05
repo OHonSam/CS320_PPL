@@ -1,0 +1,92 @@
+[
+    {
+        "date": "01/03/2025",
+        "amount": 50,
+        "category": "Food & Drink",
+        "note": "Lunch at new cafe"
+    },
+    {
+        "date": "05/03/2025",
+        "amount": 150,
+        "category": "Rent & Housing",
+        "note": "Monthly rent payment"
+    },
+    {
+        "date": "10/03/2025",
+        "amount": 30,
+        "category": "Transportation",
+        "note": "Filled up car with gas"
+    },
+    {
+        "date": "15/03/2025",
+        "amount": 80,
+        "category": "Utilities",
+        "note": "Paid electricity bill"
+    },
+    {
+        "date": "20/03/2025",
+        "amount": 100,
+        "category": "Shopping",
+        "note": "Bought new clothes"
+    },
+    {
+        "date": "25/03/2025",
+        "amount": 50,
+        "category": "Health & Medical",
+        "note": "Purchased cold medicine"
+    },
+    {
+        "date": "30/03/2025",
+        "amount": 200,
+        "category": "Education",
+        "note": "Paid for online course"
+    },
+    {
+        "date": "01/04/2025",
+        "amount": 75,
+        "category": "Entertainment",
+        "note": "Went to the movies"
+    },
+    {
+        "date": "03/04/2025",
+        "amount": 50,
+        "category": "Gifts & Donations",
+        "note": "Bought birthday gift"
+    },
+    {
+        "date": "05/04/2025",
+        "amount": 100,
+        "category": "Insurance",
+        "note": "Paid insurance premium"
+    },
+    {
+        "date": "02/03/2025",
+        "amount": 20,
+        "category": "Personal Care",
+        "note": "Bought shampoo and conditioner"
+    },
+    {
+        "date": "07/03/2025",
+        "amount": 100,
+        "category": "Debt Repayment",
+        "note": "Paid credit card bill"
+    },
+    {
+        "date": "12/03/2025",
+        "amount": 500,
+        "category": "Investments",
+        "note": "Invested in stock market"
+    },
+    {
+        "date": "17/03/2025",
+        "amount": 15,
+        "category": "Subscriptions",
+        "note": "Paid for streaming service"
+    },
+    {
+        "date": "22/03/2025",
+        "amount": 25,
+        "category": "Other",
+        "note": "Bought miscellaneous items"
+    }
+]
