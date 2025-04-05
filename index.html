@@ -7,12 +7,20 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/transactions.css">
     <link rel="stylesheet" href="css/chart.css">
+    <link rel="stylesheet" href="css/balanceCard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="center-text" id="greeting">Loading...</div>
     
     <div class="transaction-container">
+        <!-- Balance Card Component -->
+        <div id="balance-card" class="balance-card">
+            <h3 class="balance-title">Total Balance</h3>
+            <p class="balance-amount">$0.00</p>
+            <span class="balance-change positive-change">+0.00%</span>
+        </div>
+        
         <h2 class="transaction-header">Balance Over Time</h2>
         <div class="chart-container">
             <canvas id="balanceChart"></canvas>
@@ -38,5 +46,6 @@
     <script src="js/utils/greeting.js"></script>
     <script src="js/utils/transactions.js"></script>
     <script src="js/components/balanceChart.js"></script>
+    <script src="js/components/balanceCard.js"></script>
 </body>
 </html>

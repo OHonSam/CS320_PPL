@@ -1,0 +1,42 @@
+.balance-card {
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 300px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.balance-title {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-weight: normal;
+}
+
+.balance-amount {
+    font-size: 36px;
+    font-weight: bold;
+    margin: 5px 0;
+    color: #000;
+}
+
+.balance-change {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 5px;
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+}
+
+.positive-change {
+    color: #2ecc71;
+    background-color: rgba(46, 204, 113, 0.15);
+}
+
+.negative-change {
+    color: #e74c3c;
+    background-color: rgba(231, 76, 60, 0.15);
+} 
