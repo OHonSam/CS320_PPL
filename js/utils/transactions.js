@@ -59,14 +59,127 @@ function sortTransactionsByDate(transactions) {
 }
 
 /**
+ * Shows edit modal and populates form with transaction data
+ * @param {Object} transaction - Transaction to edit
+ * @param {number} index - Index in the transactions array
+ */
+function showEditModal(transaction, index) {
+    const modal = document.getElementById('editModal');
+    const form = document.getElementById('editTransactionForm');
+    
+    // Populate form fields
+    document.getElementById('editTransactionId').value = index;
+    document.getElementById('editTransactionType').value = transaction.type;
+    document.getElementById('editDate').value = transaction.date;
+    document.getElementById('editTime').value = transaction.time || '';
+    document.getElementById('editCategory').value = transaction.category;
+    document.getElementById('editNote').value = transaction.note || '';
+    document.getElementById('editAmount').value = transaction.amount;
+    
+    modal.style.display = 'block';
+}
+
+/**
+ * Updates transaction data and saves to file
+ * @param {Object} updatedTransaction - Modified transaction data
+ * @param {number} index - Index in transactions array
+ */
+async function updateTransaction(updatedTransaction, index) {
+    try {
+        const type = updatedTransaction.type;
+        const filename = `data/${type}s.json`;
+        
+        // Load current data
+        const response = await fetch(filename);
+        let data = await response.json();
+        
+        // Find and update the transaction
+        const transactionIndex = data.findIndex(t => 
+            t.date === window.allTransactions[index].date && 
+            t.amount === window.allTransactions[index].amount &&
+            t.category === window.allTransactions[index].category
+        );
+        
+        if (transactionIndex !== -1) {
+            // Update the transaction
+            const { type, ...transactionData } = updatedTransaction;
+            data[transactionIndex] = transactionData;
+            
+            // Save back to file
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const formData = new FormData();
+            formData.append('file', blob, filename);
+            
+            const saveResponse = await fetch('/save', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (!saveResponse.ok) {
+                throw new Error('Failed to save changes');
+            }
+            
+            // Update local data and re-render
+            window.allTransactions[index] = updatedTransaction;
+            renderTransactions(sortTransactionsByDate(window.allTransactions));
+            
+            // Update charts
+            if (typeof updateBalanceChart === 'function') {
+                updateBalanceChart(window.allTransactions);
+            }
+            if (typeof updatePieChart === 'function') {
+                updatePieChart(window.allTransactions);
+            }
+        }
+    } catch (error) {
+        console.error('Error updating transaction:', error);
+        alert('Failed to save changes. Please try again.');
+    }
+}
+
+// Event Listeners for Edit Modal
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('editModal');
+    const form = document.getElementById('editTransactionForm');
+    const closeBtn = modal.querySelector('.close');
+    const cancelBtn = modal.querySelector('.btn-cancel');
+    
+    // Close modal handlers
+    const closeModal = () => modal.style.display = 'none';
+    closeBtn.onclick = closeModal;
+    cancelBtn.onclick = closeModal;
+    window.onclick = (e) => {
+        if (e.target === modal) closeModal();
+    };
+    
+    // Form submission handler
+    form.onsubmit = async (e) => {
+        e.preventDefault();
+        
+        const index = parseInt(document.getElementById('editTransactionId').value);
+        const updatedTransaction = {
+            type: document.getElementById('editTransactionType').value,
+            date: document.getElementById('editDate').value,
+            time: document.getElementById('editTime').value,
+            category: document.getElementById('editCategory').value,
+            note: document.getElementById('editNote').value,
+            amount: parseFloat(document.getElementById('editAmount').value)
+        };
+        
+        await updateTransaction(updatedTransaction, index);
+        closeModal();
+    };
+});
+
+/**
  * Renders transactions in table with performance optimization
  * @param {Array} transactions - Transactions to render
  */
 function renderTransactions(transactions) {
     const tableBody = document.getElementById('transaction-body');
     const fragment = document.createDocumentFragment();
-
-    transactions.forEach(transaction => {
+    
+    transactions.forEach((transaction, index) => {
         const row = document.createElement('tr');
         const isIncome = transaction.type === 'income';
         
@@ -82,9 +195,13 @@ function renderTransactions(transactions) {
             </td>
         `;
         
+        // Add click handler for edit button
+        const editButton = row.querySelector('img[alt="Edit"]');
+        editButton.onclick = () => showEditModal(transaction, index);
+        
         fragment.appendChild(row);
     });
-
+    
     requestAnimationFrame(() => {
         tableBody.innerHTML = '';
         tableBody.appendChild(fragment);
@@ -105,6 +222,9 @@ function processTransactionData(data, type) {
     }));
 }
 
+// Store transactions globally for edit operations
+window.allTransactions = [];
+
 /**
  * Initializes transaction management system
  */
@@ -115,12 +235,12 @@ async function initTransactions() {
             loadJSON('data/expenses.json')
         ]);
 
-        const allTransactions = [
+        window.allTransactions = [
             ...processTransactionData(incomes.value || [], 'income'),
             ...processTransactionData(expenses.value || [], 'expense')
         ];
 
-        renderTransactions(sortTransactionsByDate(allTransactions));
+        renderTransactions(sortTransactionsByDate(window.allTransactions));
     } catch (error) {
         console.error('Transaction initialization error:', error);
     }
