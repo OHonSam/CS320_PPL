@@ -23,6 +23,32 @@
   border-bottom: 1px solid #ddd;
 }
 
+/* Fixed column widths */
+.transaction-table th:nth-child(1),
+.transaction-table td:nth-child(1) { width: 15%; }
+
+.transaction-table th:nth-child(2),
+.transaction-table td:nth-child(2) { width: 10%; }
+
+.transaction-table th:nth-child(3),
+.transaction-table td:nth-child(3) { width: 20%; }
+
+.transaction-table th:nth-child(4),
+.transaction-table td:nth-child(4) { width: 35%; }
+
+.transaction-table th:nth-child(5),
+.transaction-table td:nth-child(5) { 
+  width: 20%; 
+  text-align: right;
+}
+
+/* Remove previous alignment rules */
+.transaction-table col:last-child,
+.transaction-table td:last-child,
+.transaction-table th:last-child {
+  text-align: right;
+}
+
 .transaction-table tr:hover {
   background-color: #f9f9f9;
 }
@@ -33,11 +59,6 @@
 
 .transaction-table .expense {
   color: #e74c3c;
-}
-
-.transaction-amount {
-  font-weight: bold;
-  text-align: right;
 }
 
 .transaction-date {

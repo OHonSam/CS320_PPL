@@ -76,7 +76,7 @@ function renderTransactions(transactions) {
             <td>${transaction.time || '–'}</td>
             <td><span class="transaction-category">${transaction.category}</span></td>
             <td class="transaction-note">${transaction.note || '–'}</td>
-            <td class="transaction-amount">${formatCurrency(transaction.amount, isIncome)}</td>
+            <td style="text-align: right; width: 120px">${formatCurrency(transaction.amount, isIncome)}</td>
         `;
         
         fragment.appendChild(row);
