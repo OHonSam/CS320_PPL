@@ -63,11 +63,11 @@ function getPreviousDate(currentDate) {
     const date = new Date(`${year}-${month}-${day}`);
     date.setDate(date.getDate() - 1);
     
-    const prevDay = String(date.getDate()).padStart(2, '0');
-    const prevMonth = String(date.getMonth() + 1).padStart(2, '0');
-    const prevYear = date.getFullYear();
+    const previousDay = String(date.getDate()).padStart(2, '0');
+    const previousMonth = String(date.getMonth() + 1).padStart(2, '0');
+    const previousYear = date.getFullYear();
     
-    return `${prevDay}/${prevMonth}/${prevYear}`;
+    return `${previousDay}/${previousMonth}/${previousYear}`;
 }
 
 /**
@@ -122,51 +122,23 @@ function updateBalanceCard(transactions) {
     });
 }
 
-// Create a direct initialization function for the balance card
-function initBalanceCard() {
-    try {
-        // Get transactions from the existing rendering context if available
-        if (window.allTransactions) {
-            updateBalanceCard(window.allTransactions);
-            return;
-        }
-
-        // Otherwise, load transactions directly
-        Promise.allSettled([
-            loadJSON('data/incomes.json'),
-            loadJSON('data/expenses.json')
-        ]).then(([incomes, expenses]) => {
-            const allTransactions = [
-                ...processTransactionData(incomes.value || [], 'income'),
-                ...processTransactionData(expenses.value || [], 'expense')
-            ];
-            
-            updateBalanceCard(allTransactions);
-        });
-    } catch (error) {
-        console.error('Balance card initialization error:', error);
-    }
-}
-
-// Override the existing init function to store transactions globally
+// Store the original initTransactions function (if any)
 const originalInit = window.initTransactions || function(){};
 
+// Override the initTransactions function to include balance card update
 window.initTransactions = async function() {
     try {
         const [incomes, expenses] = await Promise.allSettled([
             loadJSON('data/incomes.json'),
             loadJSON('data/expenses.json')
         ]);
-
         const allTransactions = [
             ...processTransactionData(incomes.value || [], 'income'),
             ...processTransactionData(expenses.value || [], 'expense')
         ];
-
-        // Store transactions globally for other components
         window.allTransactions = allTransactions;
-
-        // Run original initialization (for chart and table)
+        
+        // Call the original init function (if any) to render the table and chart
         if (typeof originalInit === 'function') {
             originalInit.call(window);
         }
@@ -178,13 +150,6 @@ window.initTransactions = async function() {
     }
 };
 
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-    // If initTransactions hasn't been called yet, call it now
-    if (!window.allTransactions) {
-        window.initTransactions();
-    } else {
-        // If transactions already loaded, just update balance card
-        updateBalanceCard(window.allTransactions);
-    }
-});
+// Remove old listener and add new listener for the updated initTransactions function
+document.removeEventListener('DOMContentLoaded', originalInit);
+document.addEventListener('DOMContentLoaded', window.initTransactions);
