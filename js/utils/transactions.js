@@ -77,6 +77,9 @@ function renderTransactions(transactions) {
             <td><span class="transaction-category">${transaction.category}</span></td>
             <td class="transaction-note">${transaction.note || '–'}</td>
             <td style="text-align: right; width: 120px">${formatCurrency(transaction.amount, isIncome)}</td>
+            <td style="width: 40px; text-align: center">
+                <img src="assets/edit.svg" alt="Edit" style="width: 16px; height: 16px; cursor: pointer;">
+            </td>
         `;
         
         fragment.appendChild(row);
