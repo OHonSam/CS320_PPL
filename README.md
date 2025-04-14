@@ -18,8 +18,6 @@ There are two ways:
 
 - Way 2: Run `python -m http.server 8000` and then open `http://localhost:8000` in a web brower.
 
-## Team Members
+## Team Member
 
-Our team consists of three members: Thinh-Phat Vo, Hon-Sam O, Phat-Minh Le.
-
-We are all studying at University of Science, VNU-HCM.
+This project is developed by Thinh-Phat Vo. I am a student at University of Science, VNU-HCM.
