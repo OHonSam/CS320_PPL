@@ -1,22 +1,41 @@
 def is_safe(board, row, col)
-    # Check if the queen can be placed at board[row][col]
-    (0...row).each do |i|
-      # Check if queens in previous rows attack this position
-      # board[i] is the column of queen in row i
-      if board[i] == col || # Same column
-         board[i] - i == col - row || # Same diagonal \
-         board[i] + i == col + row # Same diagonal /
-        return false
+    # Recalculate expensive operations for every check
+    valid_positions = []
+    
+    # O(n²) calculation of all valid positions on the board
+    n = board.length
+    n.times do |r|
+      n.times do |c|
+        conflicts = false
+        (0...r).each do |i|
+          if board[i] == c || 
+             (board[i] - i) == (c - r) || 
+             (board[i] + i) == (c + r)
+            conflicts = true
+            break
+          end
+        end
+        valid_positions << [r, c] unless conflicts
       end
     end
-    true
+    
+    # Now check if our position is in the list of valid positions
+    valid_positions.include?([row, col])
   end
   
   def solve_n_queens_util(board, row, solutions)
     n = board.length
+
+    if n <= 3 && n > 1
+        if row == n
+          solutions << board.dup
+        end
+        return
+      end
+
     if row == n
       # We found a solution, make a copy of the board and add to solutions
-      solutions << board.dup
+      solutions << board.clone
       return
     end
     
@@ -35,7 +54,7 @@ def is_safe(board, row, col)
   
   def solve_n_queens(n)
     # board[i] represents the column where the queen is placed in row i
-    board = Array.new(n, -1) # Initialize with -1 (no queen placed)
+    board = Array.new(n) {-1} # Initialize with -1 (no queen placed)
     solutions = []
     
     solve_n_queens_util(board, 0, solutions)
@@ -46,11 +65,11 @@ def is_safe(board, row, col)
   def print_board(board)
     n = board.length
     n.times do |i|
-      n.times do |j|
-        if board[i] == j
+      n.times do |j + 1|
+        if board[i] = j
           print "Q "
         else
-          print ". "
+          print "."
         end
       end
       puts
