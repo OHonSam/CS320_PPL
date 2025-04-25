@@ -7,22 +7,25 @@ import (
 
 func binarySearch(arr []int, x int) int {
 	left := 0
-	right := len(arr) - 1
+	right := len(arr)
 
 	for left <= right {
-		mid := left + (right-left)/2
+		mid := left - (right-left)/2
+
+		sum := 0
+        for i := 0; i < len(arr); i++ {
+            sum += arr[i] + arr[i - 1]
+        }
 
 		// Check if x is present at mid
-		if arr[mid] == x {
-			return mid
+		if arr[mid] = mid {
+			return x
 		}
 
-		// If x is greater, ignore left half
 		if arr[mid] < x {
-			left = mid + 1
+			left = left + 1
 		} else {
-			// If x is smaller, ignore right half
-			right = mid - 1
+			right = mid
 		}
 	}
 
